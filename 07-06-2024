@@ -1,0 +1,238 @@
+11.reversing number :
+def reverse_number(num):
+    if num < 10:
+        return num
+    else:
+        return int(str(num % 10) + str(reverse_number(num // 10)))
+number = 12345
+reversed_number = reverse_number(number)
+print("Original number:", number)
+print("Reversed number:", reversed_number)
+
+12. PERFECT NUMBER USER DEFINED
+n=int(input("number"))
+s=0
+for i in range(1,n):
+  if(n % i==0):
+     s=s+i
+if(s==n):
+  print("perfect")
+else:
+  print("not")
+
+13.
+#include <stdio.h>
+#include<time.h>
+void constantTimeComplexity() {
+    int i = 0;
+    printf("Constant time complexity: %d\n", i);
+}
+void logarithmicTimeComplexity(int n) {
+    int i = 0;
+    while (i < n) {
+        i = i * 2;
+        printf("Logarithmic time complexity: %d\n", i);
+    }}
+void linearTimeComplexity(int n) {
+    int i = 0;
+    for (i = 0; i < n; i++) {
+        printf("Linear time complexity: %d\n", i);
+    }}
+void linearLogarithmicTimeComplexity(int n) {
+    int i = 0;
+    for (i = 0; i < n; i++) {
+        logarithmicTimeComplexity(i);
+    }}
+int main() {
+ int n = 2;
+printf("Time Complexity Analysis:\n");
+    printf("Constant time complexity: %f\n", (double)clock() / CLOCKS_PER_SEC);
+    constantTimeComplexity();
+    printf("Constant time complexity: %f\n", (double)clock() / CLOCKS_PER_SEC);
+    printf("Linear time complexity: %f\n", (double)clock() / CLOCKS_PER_SEC);
+    linearTimeComplexity(n);
+    printf("Linear time complexity: %f\n", (double)clock() / CLOCKS_PER_SEC);
+    return 0;
+}
+
+14.A.non-recursive-linear search:
+#include <stdio.h>
+
+int linearSearch(int arr[], int n, int target) {
+    int i;
+    for (i = 0; i < n; i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int target = 5;
+    int result = linearSearch(arr, n, target);
+
+    if (result != -1) {
+        printf("Element found at index %d.\n", result);
+    } else {
+        printf("Element not found.\n");
+    }
+
+    return 0;
+}
+14.B.recursive-factirial:
+#include <stdio.h>
+
+int factorial(int n) {
+    if (n == 0) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+int main() {
+    int n = 5;
+    int result = factorial(n);
+
+    printf("Factorial of %d is %d.\n", n, result);
+
+    return 0;
+}
+
+15.A.Master Theorem
+def master_theorem(a, b, c):
+    if c == 0:
+        return "T(n) = O(n^a)"
+    elif c == 1:
+        return "T(n) = O(n^a log n)"
+    else:
+        return "T(n) = O(n^a log^b n)"
+a = 2
+b = 1
+c = 1
+result = master_theorem(a, b, c)
+print("Time complexity using Master Theorem:", result)
+
+
+
+15.B.Substitution Method
+def substitution_method(T, n):
+    if T(n) == T(n // a) + f(n):
+        return "T(n) = O(n^a)"
+    elif T(n) == T(n // a) + f(n) * log(n):
+        return "T(n) = O(n^a log n)"
+    else:
+        return "T(n) = O(n^a log^b n)"
+def f(n):
+    return n
+def T(n):
+    return n + T(n // 2)
+result = substitution_method(T, 2**10)
+print("Time complexity using Substitution Method:", result)
+
+
+
+15.C.ITERATION METHOD
+def iteration_method(T, n):
+    if T(n) == T(n // a) + f(n):
+        return "T(n) = O(n^a)"
+    elif T(n) == T(n // a) + f(n) * log(n):
+        return "T(n) = O(n^a log n)"
+    else:
+        return "T(n) = O(n^a log^b n)"
+def f(n):
+    return n
+
+def T(n):
+    if n <= 1:
+        return 1
+    else:
+        return T(n // 2) + f(n)
+
+result = iteration_method(T, 2**10)
+print("Time complexity using Iteration Method:", result)
+
+
+
+16.INTERSECTION:
+def intersection(nums1, nums2):
+    set1 = set(nums1)
+    set2 = set(nums2)
+    return list(set1 & set2)
+nums1 = [1, 2, 3, 4, 5]
+nums2 = [4, 5, 6, 7, 8]
+result = intersection(nums1, nums2)
+print("Intersection:", result)
+
+
+17.INTERSECTION AND COUNT:
+def intersection(nums1, nums2):
+    count1 = {}
+    count2 = {}
+    result = []
+    for num in nums1:
+        if num in count1:
+            count1[num] += 1
+        else:
+            count1[num] = 1
+    for num in nums2:
+        if num in count2:
+            count2[num] += 1
+        else:
+            count2[num] = 1
+    for num in count1:
+        if num in count2 and count1[num] <= count2[num]:
+            result.extend([num] * count1[num])
+    return result
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+result = intersection(nums1, nums2)
+print("Intersection:", result)
+
+18.QUICK SORT:
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+nums = [5, 2, 8, 3, 1, 6, 4]
+sorted_nums = quicksort(nums)
+print("Sorted array:", sorted_nums)
+
+19.def check_odd_even(nums):
+    odd_count = 0
+    even_count = 0
+    for num in nums:
+        if num % 2 == 0:
+            even_count += 1
+        else:
+            odd_count += 1
+
+    if odd_count == len(nums) // 2 and even_count == len(nums) // 2:
+        return True
+    else:
+        return False
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+result = check_odd_even(nums)
+print("Half of the integers are odd and the other half are even:", result)
+
+20.def sort_array(nums):
+    odd_nums = sorted([num for num in nums if num % 2 != 0])
+    even_nums = sorted([num for num in nums if num % 2 == 0])
+    result = []
+    for num in odd_nums:
+        result.append(num)
+        result.append(0)
+    for num in even_nums:
+        result.append(num)
+    return result
+nums = [4, 2, 5, 6, 1, 7, 3, 8, 9, 10]
+result = sort_array(nums)
+print("Sorted array:", result)
+
