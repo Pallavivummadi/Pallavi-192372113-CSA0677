@@ -1,0 +1,175 @@
+21.SMALLEST STRING WITH SWAP
+from collections import defaultdict
+def smallestStringWithSwaps(s, pairs):
+    n = len(s)
+    parent = list(range(n))
+    rank = [0] * n
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+    def union(x, y):
+        xroot = find(x)
+        yroot = find(y)
+        if xroot == yroot:
+            return
+        if rank[xroot] < rank[yroot]:
+            parent[xroot] = yroot
+        elif rank[xroot] > rank[yroot]:
+            parent[yroot] = xroot
+        else:
+            parent[yroot] = xroot
+            rank[xroot] += 1
+    for a, b in pairs:
+        union(a, b)
+    components = defaultdict(list)
+    for i in range(n):
+        components[find(i)].append(s[i])
+    for component in components.values():
+        component.sort(reverse=True)
+    result = []
+    for i in range(n):
+        result.append(components[find(i)].pop())
+    return ''.join(result)
+
+
+22.CHECK IF CAN BREAK-
+def checkIfCanBreak(s1, s2):
+    s1 = sorted(s1)
+    s2 = sorted(s2)
+    for i in range(len(s1)):
+        if s1[i] >= s2[i]:
+            continue
+        else:
+            for j in range(i + 1, len(s1)):
+                if s1[j] <= s2[i]:
+                    return True
+            return False
+    for i in range(len(s2)):
+        if s2[i] >= s1[i]:
+            continue
+        else:
+            for j in range(i + 1, len(s2)):
+                if s2[j] <= s1[i]:
+                    return True
+            return False
+    return False
+23.MINIMUM COST-
+def minCost(s, t):
+    n = len(s)
+    m = len(t)
+    cost = 0
+    last = {}
+    for i in range(m):
+        if t[i] not in last:
+            last[t[i]] = i
+        else:
+            cost += i - last[t[i]]
+            last[t[i]] = i
+    for i in range(n):
+        if s[i] == '?':
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                if c not in last or i - last[c] < cost:
+                    s = s[:i] + c + s[i + 1:]
+                    break
+    return cost
+
+24.LAST REAMAINING-
+def lastRemaining(s):
+    stack = []
+    for char in s:
+        if char.isalpha():
+            if stack:
+                stack.pop(0)
+            else:
+                stack.append(char)
+    return ''.join(stack)
+
+25.Largest subarray-
+def maxSubArray(nums):
+    max_sum = float('-inf')
+    current_sum = 0
+    for num in nums:
+        current_sum = max(num, current_sum + num)
+        max_sum = max(max_sum, current_sum)
+    return max_sum
+26.class TreeNode-
+    def _init_(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+def constructMaximumBinaryTree(nums):
+    if not nums:
+        return None
+    max_val = max(nums)
+    max_index = nums.index(max_val)
+    root = TreeNode(max_val)
+    root.left = constructMaximumBinaryTree(nums[:max_index])
+    root.right = constructMaximumBinaryTree(nums[max_index+1:])
+    return root
+
+27.circular sum of subarray-
+def maxSubarraySumCircular(nums):
+    n = len(nums)
+    max_sum = float('-inf')
+    min_sum = float('inf')
+    total_sum = 0
+    curr_max = 0
+    curr_min = 0
+    for num in nums:
+        total_sum += num
+        curr_max = max(curr_max + num, num)
+        max_sum = max(max_sum, curr_max)
+        curr_min = min(curr_min + num, num)
+        min_sum = min(min_sum, curr_min)
+    if max_sum < 0:
+        return max_sum
+    else:
+        return max(max_sum, total_sum - min_sum)
+
+28.maximum sum range query-
+def maxSumRangeQuery(nums, queries):
+    n = len(nums)
+    for pos, val in queries:
+        nums[pos] += val
+    nums.sort()
+    queries.sort(reverse=True)
+    return sum(num * query for num, query in zip(nums, queries)) % (10**9 + 7)
+
+29.find k closest points-
+import heapq
+def kClosest(points, k):
+    heap = []
+    for x, y in points:
+        dist = x*2 + y*2
+        if len(heap) == k:
+            if dist < heap[0][0]:
+                heapq.heappop(heap)
+                heapq.heappush(heap, (dist, x, y))
+        else:
+            heapq.heappush(heap, (dist, x, y))
+        return [[x, y] for _, x, y in heap]
+
+30.MedianSortedArrays-
+class Solution:
+    def findMedianSortedArrays(self, nums1, nums2):
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        x, y = len(nums1), len(nums2)
+        low, high = 0, x
+        while low <= high:
+            partition_x = (low + high) // 2
+            partition_y = (x + y + 1) // 2 - partition_x
+            max_left_x = float('-inf') if partition_x == 0 else nums1[partition_x - 1]
+            min_right_x = float('inf') if partition_x == x else nums1[partition_x]
+            max_left_y = float('-inf') if partition_y == 0 else nums2[partition_y - 1]
+            min_right_y = float('inf') if partition_y == y else nums2[partition_y]
+            if max_left_x <= min_right_y and max_left_y <= min_right_x:
+                if (x + y) % 2 == 0:
+                    return (max(max_left_x, max_left_y) + min(min_right_x, min_right_y)) / 2
+                else:
+                    return max(max_left_x, max_left_y)
+            elif max_left_x > min_right_y:
+                high = partition_x - 1
+            else:
+                low = partition_x + 1
