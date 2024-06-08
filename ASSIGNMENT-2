@@ -1,0 +1,67 @@
+11.Container With Most Water-
+
+    def backtrack(combination, next_digits):
+        if len(next_digits) == 0:
+            output.append(combination)
+        else:
+            for letter in phone[next_digits[0]]:
+                backtrack(combination + letter, next_digits[1:])
+    output = []
+    backtrack("", digits)
+    return output
+
+18. 4Sum 
+def fourSum(nums, target):
+    nums.sort()
+    n = len(nums)
+    result = []
+    for a in range(n - 3):
+        if a > 0 and nums[a] == nums[a - 1]:
+            continue
+        for b in range(a + 1, n - 2):
+            if b > a + 1 and nums[b] == nums[b - 1]:
+                continue
+            c, d = b + 1, n - 1
+            while c < d:
+                total = nums[a] + nums[b] + nums[c] + nums[d]
+                if total == target:
+                    result.append([nums[a], nums[b], nums[c], nums[d]]
+                    while c < d and nums[c] == nums[c + 1]:
+                        c += 1
+                    while c < d and nums[d] == nums[d - 1]:
+                        d -= 1
+                    c += 1
+                    d -= 1
+                elif total < target:
+                    c += 1
+                else:
+                    d -= 1
+     return result
+
+19.Remove Nth Node From End of List 
+class Solution:
+    def removeNthFromEnd(self, head, n):
+        dummy = ListNode(0)
+        dummy.next = head
+        first = dummy
+        second = dummy
+        for i in range(n + 1):
+            first = first.next
+        while first:
+            first = first.next
+            second = second.next
+        second.next = second.next.next
+        return dummy.next
+
+20.Valid Parentheses
+def isValid(s):
+    stack = []
+    mapping = {")": "(", "}": "{", "]": "["}
+
+    for char in s:
+        if char in mapping.values():
+            stack.append(char)
+        elif char in mapping:
+            if not stack or mapping[char] != stack.pop():
+                return False
+        return not stack
