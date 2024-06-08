@@ -1,0 +1,131 @@
+1.FIBONNACI RECURSION
+int fib(int n){
+if(n<=1)
+return n;
+else
+return fib(n-1)+fib(n-2);
+}
+int main(){
+int n,i;
+printf("number");
+scanf("%d",&n);
+printf("fibonaci");
+for(i=0;i<=n;i++){
+printf("%d",fib(i));
+}
+return 0;
+}
+
+
+2.AMSTRONG RECURSION
+
+def is_armstrong(n):
+    if n < 10:
+        return True
+    else:
+        digits = [int(digit) for digit in str(n)]
+        sum_cubes = sum([digit ** len(str(n)) for digit in digits])
+        return sum_cubes == n
+print(is_armstrong(371))  
+print(is_armstrong(123)) 
+
+
+
+3.GCD RECURSION
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+# Test the function
+num1 = int(input("Enter the first number: "))
+num2 = int(input("Enter the second number: "))
+
+print("The GCD of", num1, "and", num2, "is", gcd(num1, num2))
+
+4.LARGEST ELEMENT
+a=[1,2,3,4,5,6]
+print(max(a))
+
+5.FACTORIAL IN RECURSION
+#include <stdio.h>
+int factorial(int n){
+if(n==1)
+return 1;
+else
+return (n*factorial(n-1))
+}
+int main(){
+int n,fact=1;
+printf("number");
+scanf("%d",n);
+fact=factorial(n);
+printf("%d",fact);
+return 0;
+}
+
+6.COPY STRING USING RECURSION
+def copy_string(src, dst, index=0):
+    if index == len(src):
+        return dst
+    dst[index] = src[index]
+    return copy_string(src, dst, index + 1)
+source = "Hello, World!"
+destination = list(" " * len(source))
+copy_string(source, destination)
+print("Source string:", source)
+print("Destination string:", "".join(destination))
+
+
+
+7.REVERSE STRING RECURSION
+def reverse_string(s):
+    if len(s) == 0:
+        return s
+    else:
+        return reverse_string(s[1:]) + s[0]
+
+orginal = "nikki"
+reverse = reverse_string(orginal)
+print(reverse) 
+
+
+8.RANGE OF PRIME IN RECURSION
+def is_prime(n, i=2):
+    if n <= 2:
+        return n == 2
+    if n % i == 0:
+        return False
+    if i * i > n:
+        return True
+    return is_prime(n, i + 1)
+
+for n in range(1, 101):
+    if is_prime(n):
+        print(n)
+
+9.STRING PALINDROME RECURSION
+def is_palindrome(s):
+    if len(s) <= 1:
+        return True
+    if s[0] != s[-1]:
+        return False
+    return is_palindrome(s[1:-1])
+print(is_palindrome("madam"))  # Output: True
+print(is_palindrome("hello"))  # Output: False
+
+
+
+10.PRIME OR NOT RECURSION
+def check_divisor(n, i):
+    if i > (n // 2) + 1:
+        return True
+    if n % i == 0:
+        print("not")
+        return False
+    return check_divisor(n, i + 1)
+n = 6
+if check_divisor(n, 2):
+    print("prime")
+
