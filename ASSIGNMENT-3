@@ -1,0 +1,122 @@
+1.COUNTING ELEMENTS
+def count_elements(arr):
+    count = 0
+    for num in arr:
+        if num + 1 in arr:
+            count += 1
+    return count
+
+2.PERFORM STRING SHIFTS
+def string_shift(s, shift):
+    total_shift = 0
+    for direction, amount in shift:
+        total_shift += amount
+    if direction == 0:
+        total_shift = total_shift % len(s)
+    else:
+        total_shift = total_shift % len(s)
+    return s[total_shift:] + s[:total_shift]
+
+3.LEFTMOST COLUMN WITH ATLEAST A ONE
+def leftMostColumnWithOne(binaryMatrix: 'BinaryMatrix') -> int:
+    # Get the dimensions of the binary matrix
+    rows, cols = binaryMatrix.dimensions()
+    result = -1
+    for row in range(rows):
+        left, right = 0, cols - 1
+        while left < right:
+            mid = (left + right) // 2
+            if binaryMatrix.get(row, mid) == 1:
+                right = mid # Move the right pointer to the middle if a 1 is found
+            else:
+                left = mid + 1 # Move the left pointer past the middle otherwise
+        if binaryMatrix.get(row, left) == 1:
+            result = left if result == -1 else min(result, left)
+
+4.FIRST UNIQUE NUMBER
+from collections import OrderedDict
+class FirstUnique:
+    def _init_(self, nums):
+        self.nums = nums
+        self.count = OrderedDict((num, 0) for num in nums)
+        self.unique = set(nums)
+    def showFirstUnique(self):
+        for num in list(self.count):
+            if self.count[num] == 0 and num in self.unique:
+                return num
+        return -1
+    def add(self, value):
+        if value in self.count:
+            self.count[value] += 1
+            self.unique.discard(value)
+        else:
+            self.count[value] = 1
+            self.unique.add(value)
+
+5.VALID SEQUENCE
+class TreeNode:
+    def _init_(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+class Solution:
+    def isValidSequence(self, root: TreeNode, arr: List[int]) -> bool:
+        def dfs(node, index):
+            if not node or node.val != arr[index]:
+                return False
+            if index == len(arr) - 1:
+                return not node.left and not node.right
+            return dfs(node.left, index + 1) or dfs(node.right, index + 1)
+        return dfs(root, 0)
+
+6.KIDS WITH GREATEST NUMBER OF CANDIES
+def kidsWithCandies(candies, extraCandies):
+    max_candies = max(candies)
+    result = []
+    for kid_candies in candies:
+        result.append(kid_candies + extraCandies >= max_candies)
+    return result
+
+7.MAX DIFFERENCE YOU CAN GET FROM CHANGING AN INTEGER
+def maximum69Number(num: int) -> int:
+    num_str = list(str(num))
+    for i in range(len(num_str)):
+        if num_str[i] == '6':
+            num_str[i] = '9'
+            break
+    return int(''.join(num_str))
+
+
+8.CHECK IF A STRING CAN BREAK THROUGH ANOTHER STRING
+def checkIfCanBreak(s1: str, s2: str) -> bool:
+    s1_sorted = sorted(s1)
+    s2_sorted = sorted(s2)
+    can_break_s2 = all(s1_sorted[i] >= s2_sorted[i] for i in range(len(s1)))
+    can_break_s1 = all(s2_sorted[i] >= s1_sorted[i] for i in range(len(s2)))
+    return can_break_s2 or can_break_s1
+
+
+9.NUMBER OF WAYS TO WEAR DIFFERENT HATS TO EACHPTHER
+def numberWays(hats):
+    n = len(hats)
+    mod = 10**9 + 7
+    ways = 1
+    for i in range(n):
+        for j in range(len(hats[i])):
+            if hats[i][j] not in [x for x in hats[:i] + hats[i+1:]]:
+                ways = (ways * (40 - len(hats[i])) % mod)
+    return ways
+
+
+10.NEXT PERMUTATIONS
+def nextPermutation(nums):
+    i = len(nums) - 2
+    while i >= 0 and nums[i] >= nums[i+1]:
+        i -= 1
+    if i >= 0:
+        j = len(nums) - 1
+        while j > i and nums[j] <= nums[i]:
+            j -= 1
+        nums[i], nums[j] = nums[j], nums[i]
+    nums[i+1:] = reversed(nums[i+1:])
+    return nums
