@@ -1,0 +1,91 @@
+1.OLD STRING DIFFERENCE
+Algorithm:
+*Initialize Difference Array: Initialize a difference array diff with the same length as the first word.
+*Calculate Differences: Calculate the difference array for each word in the input list.
+*Find Odd Word: Find the word whose difference array does not match the initial difference array.
+*Return Odd Word: Return the odd word.
+CODE:
+def oddString(words):
+    diff = [None] * len(words[0])
+    for word in words:
+        diff_word = [word[i+1] - word[i] for i in range(len(word)-1)]
+        if diff_word != diff:
+            return word
+    return None
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.WORDS WITHIN TWO EDITS OF DICTIONARY
+Algorithm:
+*Iterate through Queries: Iterate through each query in the queries array.
+*Iterate through Dictionary: Iterate through each word in the dictionary array.
+*Compare Query and Word: Compare the query and word by counting the number of different letters.
+*Check for Two Edits: Check if the number of different letters is less than or equal to 2.
+*Add to Result: If the number of different letters is less than or equal to 2, add the query to the result list.
+*Return Result: Return the result list.
+CODE:
+def findAndReplaceWord(queries, dictionary):
+    result = []
+    for query in queries:
+        for word in dictionary:
+            if len(query) != len(word):
+                continue
+            diff = 0
+            for i in range(len(query)):
+                if query[i] != word[i]:
+                    diff += 1
+                if diff > 2:
+                    break
+            if diff <= 2:
+                result.append(query)
+                break
+    return result
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.NEXT GREATER ELEMENT IV
+Algorithm:
+*Initialize Result Array: Initialize an array result of size n with all elements set to -1.
+*Iterate through Array: Iterate through each element nums[i] in the array.
+*Find First Greater Element: Find the first greater element nums[j] to the right of nums[i].
+*Find Second Greater Element: Find the second greater element nums[k] to the right of nums[i] such that nums[k] > nums[i] and nums[k] > nums[j].
+*Update Result: Update result[i] with the second greater element nums[k].
+*Return Result: Return the result array.
+CODE:
+def secondGreaterElement(nums):
+    result = [-1] * len(nums)
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[j] > nums[i]:
+                for k in range(j + 1, len(nums)):
+                    if nums[k] > nums[i] and nums[k] > nums[j]:
+                        result[i] = nums[k]
+                        break
+                break
+    return result
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.MINIMUM ADDITION TO MAKE INTEGER BEAUTIFUL
+Algorithm:
+*Convert to String: Convert the integer n to a string.
+*Calculate Digit Sum: Calculate the sum of the digits in the string.
+*Check if Beautiful: Check if the digit sum is less than or equal to the target.
+*Increment and Repeat: If not, increment n by 1 and repeat the process.
+*Return: Return the minimum non-negative integer n that is beautiful.
+CODE:
+def makeBeautiful(n, target):
+    while sum(int(digit) for digit in str(n)) > target:
+        n += 1
+    return n
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+5.SORT ARRAY BY MOVING ITEMS TO EMPTY SPACE:
+Algorithm:
+*Count Operations: Initialize a variable operations to 0.
+*Iterate through Array: Iterate through the array nums.
+*Check if Item is at Correct Position: Check if the item at index i is at the correct position (i.e., nums[i] == i).
+*Increment Operations: If the item is not at the correct position, increment operations by 1.
+*Return Operations: Return the total number of operations needed to sort the array
+CODE:
+def min_operations(nums):
+    n = len(nums)
+    operations = 0
+    for i in range(n):
+        if nums[i] != i:
+            operations += 1
+    return operations
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
