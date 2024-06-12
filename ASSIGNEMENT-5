@@ -1,0 +1,1048 @@
+1.TWO SUM
+Algorithm:
+*Initialize Dictionary: Create an empty dictionary num_dict to store the numbers and their indices.
+*Iterate through Array: Iterate through the array nums and its indices i.
+*Calculate Complement: Calculate the complement complement = target - num.
+*Check if Complement Exists: Check if the complement exists in the dictionary num_dict.
+*If Complement Exists: If the complement exists, return the indices of the complement and the current number.
+*Add Number to Dictionary: Add the current number and its index to the dictionary num_dict.
+*If No Solution: If no solution is found, return an empty list.
+CODE:
+def twoSum(nums, target):
+    num_dict = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in num_dict:
+            return [num_dict[complement], i]
+        num_dict[num] = i
+    return []
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.ADD TWO NUMBERS
+Algorithm:
+*Initialize Dummy Node: Create a dummy node to simplify the process of adding the linked lists.
+*Initialize Carry: Initialize a carry variable to 0.
+*Iterate through Linked Lists: Iterate through the linked lists l1 and l2 and their carry.
+*Add Digits: Add the digits of the linked lists and the carry.
+*Create New Node: Create a new node with the sum of the digits and the carry.
+*Update Carry: Update the carry for the next iteration.
+*Return Result: Return the result linked list.
+CODE:
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        dummy = ListNode()
+        current = dummy
+        carry = 0
+
+        while l1 or l2 or carry:
+            if l1:
+                carry += l1.val
+                l1 = l1.next
+            if l2:
+                carry += l2.val
+                l2 = l2.next
+            current.next = ListNode(carry % 10)
+            current = current.next
+            carry //= 10
+        return dummy.next
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.LONGEST SUBSTRING WITHOUT REAPEATING CHARACTERS
+Algorithm:
+*Initialize Set and Variables: Initialize a set char_set to store unique characters, and variables l and res to track the left pointer and the result.
+*Iterate through String: Iterate through the string s using the right pointer r.
+*Check for Repeating Characters: Check if the character at r is in char_set. If it is, remove the character at l from char_set and increment l.
+*Add Character to Set: Add the character at r to char_set.
+*Update Result: Update res with the maximum length of the substring without repeating characters.
+*Return Result: Return the result.
+CODE:
+def lengthOfLongestSubstring(s):
+    char_set = set()
+    l = 0
+    res = 0
+    for r in range(len(s)):
+        while s[r] in char_set:
+            char_set.remove(s[l])
+            l += 1
+        char_set.add(s[r])
+        res = max(res, r - l + 1)
+    return res
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.MEDIAN OF TWO SORRETED ARRAYS
+Algorithm:
+*Sort Arrays: Sort the two arrays nums1 and nums2.
+*Find Median: Find the median of the sorted arrays.
+*Check for Even Length: Check if the total length of the arrays is even or odd.
+*Return Median: Return the median.
+CODE:
+class Solution:
+    def findMedianSortedArrays(self, nums1, nums2):
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        x, y = len(nums1), len(nums2)
+        low, high = 0, x
+        while low <= high:
+            partition_x = (low + high) // 2
+            partition_y = (x + y + 1) // 2 - partition_x
+            max_left_x = float('-inf') if partition_x == 0 else nums
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+5.LONGEST PALINDRONMIC STRING
+Algorithm:
+*Initialize Variables: Initialize variables n to store the length of the input string s, dp to store the dynamic programming table, 
+max_len to store the maximum length of the palindromic substring, and start to store the starting index of the palindromic substring.
+*Fill Diagonal Elements: Fill the diagonal elements of the dp table, indicating that single characters are palindromes.
+*Fill dp Table: Fill the dp table using dynamic programming, checking if the substring from index i to j is a palindrome.
+*Update Maximum Length and Starting Index: Update max_len and start if a longer palindromic substring is found.
+*Return Palindromic Substring: Return the palindromic substring using the start and max_len values.
+CODE:
+def longestPalindrome(s):
+    n = len(s)
+    dp = [[False] * n for _ in range(n)]
+    max_len = 1
+    start = 0
+    for i in range(n):
+        dp[i][i] = True
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if length == 2:
+                dp[i][j] = s[i] == s[j]
+            else:
+                dp[i][j] = s[i] == s[j] and dp[i + 1][j - 1]
+            if dp[i][j] and length > max_len:
+                max_len = length
+                start = i
+    return s[start:start + max_len]
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6.ZIGZAG CONVERSATIONS
+Algorithm:
+*Check for Special Cases: Check if the number of rows is 1 or if the number of rows is 
+greater than or equal to the length of the string. If so, return the original string.
+*Initialize Variables: Initialize an array res to store the result, and variables index and step to track the current position and direction.
+*Iterate through String: Iterate through the string s.
+*Add Character to Result: Add the character to the result array at the current position index.
+*Update Index and Step: Update the index and step based on the direction.
+*Join Result: Join the result array into a string and return it.
+CODE:
+def convert(s, numRows):
+    if numRows == 1 or numRows >= len(s):
+        return s
+    res = [''] * numRows
+    index, step = 0, 1
+    for char in s:
+        res[index] += char
+        if index == 0:
+            step = 1
+        elif index == numRows - 1:
+            step = -1
+        index += step
+    return ''.join(res)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7.REVERSE INTEGER
+Algorithm:
+*Check for Negative Number: Check if the input number x is negative.
+If so, set a flag neg to True and convert x to positive.
+*Reverse Number: Initialize a variable res to 0 and iterate through the digits of x from right to left, adding each digit to res.
+*Check for Overflow: Check if the reversed number res is within the 32-bit signed integer range. If not, return 0.
+*Return Result: Return the reversed number res with the original sign if the input number was negative.
+CODE:
+def reverse(x):
+    neg = False
+    if x < 0:
+        neg = True
+        x = -x
+    res = 0
+    while x > 0:
+        res = res * 10 + x % 10
+        x //= 10
+    if res > 2**31 - 1:
+        return 0
+    return -res if neg else res
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8.STRING TO INTEGER
+Algorithm:
+*Remove Leading Whitespace: Remove leading whitespace from the input string s.
+*Check for Sign: Check if the first character is '+' or '-'. If so, set the sign accordingly.
+*Read Digits: Read in the digits of the number until a non-digit character is encountered.
+*Convert to Integer: Convert the digits into an integer.
+*Apply Sign: Apply the sign to the integer.
+*Check for Overflow: Check if the integer is within the 32-bit signed integer range. If not, clamp it to the range.
+*Return Result: Return the final result.
+CODE:
+def myAtoi(s):
+    s = s.lstrip()
+    if not s:
+        return 0
+    sign = 1
+    if s[0] in ['+', '-']:
+        sign = -1 if s[0] == '-' else 1
+        s = s[1:]
+    res = 0
+    for char in s:
+        if char.isdigit():
+            res = res * 10 + int(char)
+        else:
+            break
+    res *= sign
+    if res < -2**31:
+        return -2**31
+    elif res > 2**31 - 1:
+        return 2**31 - 1
+    else:
+        return res
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9.PALINDROME NUMBER
+Algorithm:
+*Check for Negative Number: Check if the input number x is negative. If so, return False.
+*Reverse Number: Initialize a variable reversed_num to 0 and iterate through the 
+*digits of x from right to left, adding each digit to reversed_num.
+*Check for Palindrome: Check if the original number original_num is equal to the reversed number reversed_num.
+*If so, return True; otherwise, return False.
+CODE:
+def isPalindrome(x):
+    if x < 0:
+        return False
+    reversed_num = 0
+    original_num = x
+    while x > 0:
+        digit = x % 10
+        reversed_num = reversed_num * 10 + digit
+        x //= 10
+    return original_num == reversed_num
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10.REGULAR EXPRESSION MATCHING
+Algorithm:
+*Check for Empty Pattern: Check if the pattern p is empty. If so, return True if the input string s is also empty; otherwise, return False.
+*Check for First Match: Check if the first character of the input string s matches the first character of the pattern p or if p contains a '.'.
+Check for '': Check if the second character of the pattern p is '*'.
+*If so, recursively call the function with the pattern p[2:] and the input string s (ignoring the first character of s if p matches s).
+*Return Result: Return the result of the recursive call.
+CODE:
+def isMatch(s, p):
+    if not p:
+        return not s
+    first_match = bool(s) and p[0] in {s[0], '.'}
+    if len(p) >= 2 and p[1] == '*':
+        return (isMatch(s, p[2:]) or
+                first_match and isMatch(s[1:], p))
+    else:
+        return first_match and isMatch(s[1:], p[1:])
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+11.CONTAINER WITH MOST WATER
+Algorithm:
+*Initialize Variables: Initialize low to 0, high to the last index of the array, and ans to 0.
+*Loop: Loop until low is greater than high.
+*Find Minimum Height: Find the minimum height between height[low] and height[high].
+*Calculate Area: Calculate the area of the container by multiplying the width (high - low) by the minimum height.
+*Update Answer: Update ans with the maximum of the current area and the previous maximum area.
+*Move Pointers: Move the pointer that corresponds to the minimum height towards the other pointer.
+*Return Answer: Return the maximum area.
+CODE:
+def maxArea(height):
+    low = 0
+    high = len(height) - 1
+    ans = 0
+    while low < high:
+        if height[low] < height[high]:
+            min_height = height[low]
+            min_height_index = low
+        else:
+            min_height = height[high]
+            min_height_index = high
+
+        ans = max((high - low) * min_height, ans)
+
+        if low + 1 == min_height_index + 1:
+            low += 1
+        else:
+            high -= 1
+    return ans
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+12.INTEGER TO ROMAN
+Algorithm:
+*Initialize Variables: Initialize a list val of decimal values and a list syb of corresponding Roman numerals.
+*Loop: Loop until num is 0.
+*Find Largest Value: Find the largest value in val that is less than or equal to num.
+*Add Roman Numeral: Add the corresponding Roman numeral to roman_num and subtract the value from num.
+*Move to Next Value: Move to the next value in val.
+*Return Roman Numeral: Return the Roman numeral.
+CODE:
+def intToRoman(num):
+    val = [
+        1000, 900, 500, 400,
+        100, 90, 50, 40,
+        10, 9, 5, 4,
+        1
+    ]
+    syb = [
+        "M", "CM", "D", "CD",
+        "C", "XC", "L", "XL",
+        "X", "IX", "V", "IV",
+        "I"
+    ]
+    roman_num = ''
+    i = 0
+    while num > 0:
+        for _ in range(num // val[i]):
+            roman_num += syb[i]
+            num -= val[i]
+        i += 1
+    return roman_num
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+13.ROMAN TO INTEGER
+Algorithm:
+*Initialize Map: Initialize a dictionary roman_map to map Roman numerals to their corresponding integer values.
+*Initialize Result: Initialize a variable result to 0.
+*Loop: Loop through the Roman numeral string.
+*Check for Subtraction: Check if the current numeral is less than the next numeral. If so, subtract the current numeral from the result.
+*Add Numeral: Otherwise, add the current numeral to the result.
+*Return Result: Return the final result.
+CODE:
+def romanToInt(s):
+    roman_map = {
+        'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
+    }
+    result = 0
+    for i in range(len(s) - 1):
+        if roman_map[s[i]] < roman_map[s[i + 1]]:
+            result -= roman_map[s[i]]
+        else:
+            result += roman_map[s[i]]
+    result += roman_map[s[-1]]
+    return result
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+14.LONGEST COMMON PREFIX
+Algorithm:
+*Check for Empty List: Check if the input list strs is empty. If so, return an empty string.
+*Initialize Prefix: Initialize a variable prefix to an empty string.
+*Loop: Loop through the characters of the strings in strs using the zip function.
+*Check for Common Character: Check if all characters at the current position are the same. If so, add the character to prefix.
+*Break Loop: If not, break the loop.
+*Return Prefix: Return the longest common prefix.
+CODE:
+def longestCommonPrefix(strs):
+    if not strs:
+        return ""
+    prefix = ""
+    for chars in zip(*strs):
+        if len(set(chars)) == 1:
+            prefix += chars[0]
+        else:
+            break
+    return prefix
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+15.3SUM
+Algorithm:
+*Sort the Array: Sort the input array nums in ascending order.
+*Initialize Result: Initialize an empty list result to store the triplets.
+*Loop: Loop through the array from the first element to the second-to-last element.
+*Skip Duplicates: Skip duplicate elements at the current position.
+*Set Pointers: Set two pointers l and r to the next element and the last element of the array.
+*Find Triplet: Find a triplet whose sum is equal to zero. If the sum is less than zero, increment l.
+*If the sum is greater than zero, decrement r. If the sum is equal to zero, add the triplet to result and move l and r towards the center.
+*Return Result: Return the list of unique triplets.
+CODE:
+def threeSum(nums):
+    nums.sort()
+    result = []
+    for i in range(len(nums) - 2):
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        l, r = i + 1, len(nums) - 1
+        while l < r:
+            s = nums[i] + nums[l] + nums[r]
+            if s < 0:
+                l += 1
+            elif s > 0:
+                r -= 1
+            else:
+                result.append([nums[i], nums[l], nums[r]])
+                while l < r and nums[l] == nums[l + 1]:
+                    l += 1
+                while l < r and nums[r] == nums[r - 1]:
+                    r -= 1
+                l += 1
+                r -= 1
+    return result
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+16.3SUM CLOSEST
+Algorithm:
+*Sort the Array: Sort the input array nums in ascending order.
+*Initialize Closest Sum: Initialize a variable closest_sum to infinity.
+*Loop: Loop through the array from the first element to the second-to-last element.
+*Set Pointers: Set two pointers l and r to the next element and the last element of the array.
+*Find Closest Sum: Find a triplet whose sum is closest to the target. 
+*If the sum is equal to the target, return the sum. If the sum is less than the target, increment l. 
+*If the sum is greater than the target, decrement r. If the sum is closer to the target than the current closest sum, update closest_sum.
+*Return Closest Sum: Return the sum of the three integers closest to the target.
+CODE:
+def threeSumClosest(nums, target):
+    nums.sort()
+    closest_sum = float('inf')
+    for i in range(len(nums) - 2):
+        l, r = i + 1, len(nums) - 1
+        while l < r:
+            s = nums[i] + nums[l] + nums[r]
+            if s == target:
+                return s
+            if abs(s - target) < abs(closest_sum - target):
+                closest_sum = s
+            if s < target:
+                l += 1
+            else:
+                r -= 1
+    return closest_sum
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+17.LETTER COMBINATIONS OF A PHONE NUMBER
+Algorithm:
+*Check for Empty Input: Check if the input string digits is empty. If so, return an empty list.
+*Initialize Phone Mapping: Initialize a dictionary phone to map digits to letters.
+*Define Backtrack Function: Define a recursive function backtrack to generate all possible combinations.
+*Backtrack: Call backtrack with an empty combination and the input digits.
+*Return Output: Return the list of all possible combinations.
+CODE:
+def letterCombinations(digits):
+    if not digits:
+        return []
+    phone = {'2': ['a', 'b', 'c'],
+             '3': ['d', 'e', 'f'],
+             '4': ['g', 'h', 'i'],
+             '5': ['j', 'k', 'l'],
+             '6': ['m', 'n', 'o'],
+             '7': ['p', 'q', 'r', 's'],
+             '8': ['t', 'u', 'v'],
+             '9': ['w', 'x', 'y', 'z']}
+    def backtrack(combination, next_digits):
+        if len(next_digits) == 0:
+            output.append(combination)
+        else:
+            for letter in phone[next_digits[0]]:
+                backtrack(combination + letter, next_digits[1:])
+    output = []
+    backtrack("", digits)
+    return output
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+18.4SUM
+Algorithm:
+*Sort the Array: Sort the input array nums in ascending order.
+*Initialize Result: Initialize an empty list result to store the quadruplets.
+*Loop: Loop through the array from the first element to the third-to-last element.
+*Skip Duplicates: Skip duplicate elements at the current position.
+*Set Pointers: Set two pointers left and right to the next element and the last element of the array.
+*Find Quadruplet: Find a quadruplet whose sum is equal to the target. If the sum is less than the target, increment left. 
+*If the sum is greater than the target, decrement right. If the sum is equal to the target, add the quadruplet to result and move left and right towards the center.
+*Return Result: Return the list of all unique quadruplets.
+CODE:
+def fourSum(nums, target):
+    nums.sort()
+    result = []
+    for i in range(len(nums) - 3):
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        for j in range(i + 1, len(nums) - 2):
+            if j > i + 1 and nums[j] == nums[j - 1]:
+                continue
+            left, right = j + 1, len(nums) - 1
+            while left < right:
+                s = nums[i] + nums[j] + nums[left] + nums[right]
+                if s < target:
+                    left += 1
+                elif s > target:
+                    right -= 1
+                else:
+                    result.append([nums[i], nums[j], nums[left], nums[right]])
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    left += 1
+                    right -= 1
+    return result
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+19.REMOVE NTH NODE FROM END OF LIST
+Algorithm:
+*Create Dummy Node: Create a dummy node and set its next pointer to the head of the linked list.
+*Initialize Pointers: Initialize two pointers, first and second, to the dummy node.
+*Advance First Pointer: Advance first pointer so that the gap between first and second is n nodes apart.
+*Move First to the End: Move first to the end of the linked list, maintaining the gap.
+*Remove Node: Remove the node at the end by setting second.next to second.next.next.
+*Return Head: Return the head of the modified linked list.
+CODE:
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+def removeNthFromEnd(head, n):
+    dummy = ListNode(0)
+    dummy.next = head
+    first = dummy
+    second = dummy
+    for i in range(n + 1):
+        first = first.next
+    while first:
+        first = first.next
+        second = second.next
+    second.next = second.next.next
+    return dummy.next
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+20.VALID PARENTHESES
+Algorithm:
+*Initialize Stack: Initialize an empty stack stack.
+*Initialize Mapping: Initialize a dictionary mapping to map closing brackets to their corresponding opening brackets.
+*Loop: Loop through each character char in the input string s.
+*Push Opening Brackets: If char is an opening bracket, push it onto the stack.
+*Check Closing Brackets: If char is a closing bracket, check if the stack is empty or if the top of the stack does not match the corresponding opening bracket. 
+*If either condition is true, return False.
+*Return Result: After looping through all characters, return whether the stack is empty. 
+*If the stack is empty, the input string is valid; otherwise, it is not.
+CODE:
+def isValid(s):
+    stack = []
+    mapping = {")": "(", "}": "{", "]": "["}
+    for char in s:
+        if char in mapping.values():
+            stack.append(char)
+        elif char in mapping:
+            if not stack or mapping[char] != stack.pop():
+                return False
+    return not stack
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.TWO SUM
+Algorithm:
+*Initialize Dictionary: Create an empty dictionary num_dict to store the numbers and their indices.
+*Iterate through Array: Iterate through the array nums and its indices i.
+*Calculate Complement: Calculate the complement complement = target - num.
+*Check if Complement Exists: Check if the complement exists in the dictionary num_dict.
+*If Complement Exists: If the complement exists, return the indices of the complement and the current number.
+*Add Number to Dictionary: Add the current number and its index to the dictionary num_dict.
+*If No Solution: If no solution is found, return an empty list.
+CODE:
+def twoSum(nums, target):
+    num_dict = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in num_dict:
+            return [num_dict[complement], i]
+        num_dict[num] = i
+    return []
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.ADD TWO NUMBERS
+Algorithm:
+*Initialize Dummy Node: Create a dummy node to simplify the process of adding the linked lists.
+*Initialize Carry: Initialize a carry variable to 0.
+*Iterate through Linked Lists: Iterate through the linked lists l1 and l2 and their carry.
+*Add Digits: Add the digits of the linked lists and the carry.
+*Create New Node: Create a new node with the sum of the digits and the carry.
+*Update Carry: Update the carry for the next iteration.
+*Return Result: Return the result linked list.
+CODE:
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        dummy = ListNode()
+        current = dummy
+        carry = 0
+
+        while l1 or l2 or carry:
+            if l1:
+                carry += l1.val
+                l1 = l1.next
+            if l2:
+                carry += l2.val
+                l2 = l2.next
+            current.next = ListNode(carry % 10)
+            current = current.next
+            carry //= 10
+        return dummy.next
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.LONGEST SUBSTRING WITHOUT REAPEATING CHARACTERS
+Algorithm:
+*Initialize Set and Variables: Initialize a set char_set to store unique characters, and variables l and res to track the left pointer and the result.
+*Iterate through String: Iterate through the string s using the right pointer r.
+*Check for Repeating Characters: Check if the character at r is in char_set. If it is, remove the character at l from char_set and increment l.
+*Add Character to Set: Add the character at r to char_set.
+*Update Result: Update res with the maximum length of the substring without repeating characters.
+*Return Result: Return the result.
+CODE:
+def lengthOfLongestSubstring(s):
+    char_set = set()
+    l = 0
+    res = 0
+    for r in range(len(s)):
+        while s[r] in char_set:
+            char_set.remove(s[l])
+            l += 1
+        char_set.add(s[r])
+        res = max(res, r - l + 1)
+    return res
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.MEDIAN OF TWO SORRETED ARRAYS
+Algorithm:
+*Sort Arrays: Sort the two arrays nums1 and nums2.
+*Find Median: Find the median of the sorted arrays.
+*Check for Even Length: Check if the total length of the arrays is even or odd.
+*Return Median: Return the median.
+CODE:
+class Solution:
+    def findMedianSortedArrays(self, nums1, nums2):
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        x, y = len(nums1), len(nums2)
+        low, high = 0, x
+        while low <= high:
+            partition_x = (low + high) // 2
+            partition_y = (x + y + 1) // 2 - partition_x
+            max_left_x = float('-inf') if partition_x == 0 else nums
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+5.LONGEST PALINDRONMIC STRING
+Algorithm:
+*Initialize Variables: Initialize variables n to store the length of the input string s, dp to store the dynamic programming table, 
+max_len to store the maximum length of the palindromic substring, and start to store the starting index of the palindromic substring.
+*Fill Diagonal Elements: Fill the diagonal elements of the dp table, indicating that single characters are palindromes.
+*Fill dp Table: Fill the dp table using dynamic programming, checking if the substring from index i to j is a palindrome.
+*Update Maximum Length and Starting Index: Update max_len and start if a longer palindromic substring is found.
+*Return Palindromic Substring: Return the palindromic substring using the start and max_len values.
+CODE:
+def longestPalindrome(s):
+    n = len(s)
+    dp = [[False] * n for _ in range(n)]
+    max_len = 1
+    start = 0
+    for i in range(n):
+        dp[i][i] = True
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if length == 2:
+                dp[i][j] = s[i] == s[j]
+            else:
+                dp[i][j] = s[i] == s[j] and dp[i + 1][j - 1]
+            if dp[i][j] and length > max_len:
+                max_len = length
+                start = i
+    return s[start:start + max_len]
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6.ZIGZAG CONVERSATIONS
+Algorithm:
+*Check for Special Cases: Check if the number of rows is 1 or if the number of rows is 
+greater than or equal to the length of the string. If so, return the original string.
+*Initialize Variables: Initialize an array res to store the result, and variables index and step to track the current position and direction.
+*Iterate through String: Iterate through the string s.
+*Add Character to Result: Add the character to the result array at the current position index.
+*Update Index and Step: Update the index and step based on the direction.
+*Join Result: Join the result array into a string and return it.
+CODE:
+def convert(s, numRows):
+    if numRows == 1 or numRows >= len(s):
+        return s
+    res = [''] * numRows
+    index, step = 0, 1
+    for char in s:
+        res[index] += char
+        if index == 0:
+            step = 1
+        elif index == numRows - 1:
+            step = -1
+        index += step
+    return ''.join(res)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7.REVERSE INTEGER
+Algorithm:
+*Check for Negative Number: Check if the input number x is negative.
+If so, set a flag neg to True and convert x to positive.
+*Reverse Number: Initialize a variable res to 0 and iterate through the digits of x from right to left, adding each digit to res.
+*Check for Overflow: Check if the reversed number res is within the 32-bit signed integer range. If not, return 0.
+*Return Result: Return the reversed number res with the original sign if the input number was negative.
+CODE:
+def reverse(x):
+    neg = False
+    if x < 0:
+        neg = True
+        x = -x
+    res = 0
+    while x > 0:
+        res = res * 10 + x % 10
+        x //= 10
+    if res > 2**31 - 1:
+        return 0
+    return -res if neg else res
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8.STRING TO INTEGER
+Algorithm:
+*Remove Leading Whitespace: Remove leading whitespace from the input string s.
+*Check for Sign: Check if the first character is '+' or '-'. If so, set the sign accordingly.
+*Read Digits: Read in the digits of the number until a non-digit character is encountered.
+*Convert to Integer: Convert the digits into an integer.
+*Apply Sign: Apply the sign to the integer.
+*Check for Overflow: Check if the integer is within the 32-bit signed integer range. If not, clamp it to the range.
+*Return Result: Return the final result.
+CODE:
+def myAtoi(s):
+    s = s.lstrip()
+    if not s:
+        return 0
+    sign = 1
+    if s[0] in ['+', '-']:
+        sign = -1 if s[0] == '-' else 1
+        s = s[1:]
+    res = 0
+    for char in s:
+        if char.isdigit():
+            res = res * 10 + int(char)
+        else:
+            break
+    res *= sign
+    if res < -2**31:
+        return -2**31
+    elif res > 2**31 - 1:
+        return 2**31 - 1
+    else:
+        return res
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9.PALINDROME NUMBER
+Algorithm:
+*Check for Negative Number: Check if the input number x is negative. If so, return False.
+*Reverse Number: Initialize a variable reversed_num to 0 and iterate through the 
+*digits of x from right to left, adding each digit to reversed_num.
+*Check for Palindrome: Check if the original number original_num is equal to the reversed number reversed_num.
+*If so, return True; otherwise, return False.
+CODE:
+def isPalindrome(x):
+    if x < 0:
+        return False
+    reversed_num = 0
+    original_num = x
+    while x > 0:
+        digit = x % 10
+        reversed_num = reversed_num * 10 + digit
+        x //= 10
+    return original_num == reversed_num
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10.REGULAR EXPRESSION MATCHING
+Algorithm:
+*Check for Empty Pattern: Check if the pattern p is empty. If so, return True if the input string s is also empty; otherwise, return False.
+*Check for First Match: Check if the first character of the input string s matches the first character of the pattern p or if p contains a '.'.
+Check for '': Check if the second character of the pattern p is '*'.
+*If so, recursively call the function with the pattern p[2:] and the input string s (ignoring the first character of s if p matches s).
+*Return Result: Return the result of the recursive call.
+CODE:
+def isMatch(s, p):
+    if not p:
+        return not s
+    first_match = bool(s) and p[0] in {s[0], '.'}
+    if len(p) >= 2 and p[1] == '*':
+        return (isMatch(s, p[2:]) or
+                first_match and isMatch(s[1:], p))
+    else:
+        return first_match and isMatch(s[1:], p[1:])
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+11.CONTAINER WITH MOST WATER
+Algorithm:
+*Initialize Variables: Initialize low to 0, high to the last index of the array, and ans to 0.
+*Loop: Loop until low is greater than high.
+*Find Minimum Height: Find the minimum height between height[low] and height[high].
+*Calculate Area: Calculate the area of the container by multiplying the width (high - low) by the minimum height.
+*Update Answer: Update ans with the maximum of the current area and the previous maximum area.
+*Move Pointers: Move the pointer that corresponds to the minimum height towards the other pointer.
+*Return Answer: Return the maximum area.
+CODE:
+def maxArea(height):
+    low = 0
+    high = len(height) - 1
+    ans = 0
+    while low < high:
+        if height[low] < height[high]:
+            min_height = height[low]
+            min_height_index = low
+        else:
+            min_height = height[high]
+            min_height_index = high
+
+        ans = max((high - low) * min_height, ans)
+
+        if low + 1 == min_height_index + 1:
+            low += 1
+        else:
+            high -= 1
+    return ans
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+12.INTEGER TO ROMAN
+Algorithm:
+*Initialize Variables: Initialize a list val of decimal values and a list syb of corresponding Roman numerals.
+*Loop: Loop until num is 0.
+*Find Largest Value: Find the largest value in val that is less than or equal to num.
+*Add Roman Numeral: Add the corresponding Roman numeral to roman_num and subtract the value from num.
+*Move to Next Value: Move to the next value in val.
+*Return Roman Numeral: Return the Roman numeral.
+CODE:
+def intToRoman(num):
+    val = [
+        1000, 900, 500, 400,
+        100, 90, 50, 40,
+        10, 9, 5, 4,
+        1
+    ]
+    syb = [
+        "M", "CM", "D", "CD",
+        "C", "XC", "L", "XL",
+        "X", "IX", "V", "IV",
+        "I"
+    ]
+    roman_num = ''
+    i = 0
+    while num > 0:
+        for _ in range(num // val[i]):
+            roman_num += syb[i]
+            num -= val[i]
+        i += 1
+    return roman_num
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+13.ROMAN TO INTEGER
+Algorithm:
+*Initialize Map: Initialize a dictionary roman_map to map Roman numerals to their corresponding integer values.
+*Initialize Result: Initialize a variable result to 0.
+*Loop: Loop through the Roman numeral string.
+*Check for Subtraction: Check if the current numeral is less than the next numeral. If so, subtract the current numeral from the result.
+*Add Numeral: Otherwise, add the current numeral to the result.
+*Return Result: Return the final result.
+CODE:
+def romanToInt(s):
+    roman_map = {
+        'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
+    }
+    result = 0
+    for i in range(len(s) - 1):
+        if roman_map[s[i]] < roman_map[s[i + 1]]:
+            result -= roman_map[s[i]]
+        else:
+            result += roman_map[s[i]]
+    result += roman_map[s[-1]]
+    return result
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+14.LONGEST COMMON PREFIX
+Algorithm:
+*Check for Empty List: Check if the input list strs is empty. If so, return an empty string.
+*Initialize Prefix: Initialize a variable prefix to an empty string.
+*Loop: Loop through the characters of the strings in strs using the zip function.
+*Check for Common Character: Check if all characters at the current position are the same. If so, add the character to prefix.
+*Break Loop: If not, break the loop.
+*Return Prefix: Return the longest common prefix.
+CODE:
+def longestCommonPrefix(strs):
+    if not strs:
+        return ""
+    prefix = ""
+    for chars in zip(*strs):
+        if len(set(chars)) == 1:
+            prefix += chars[0]
+        else:
+            break
+    return prefix
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+15.3SUM
+Algorithm:
+*Sort the Array: Sort the input array nums in ascending order.
+*Initialize Result: Initialize an empty list result to store the triplets.
+*Loop: Loop through the array from the first element to the second-to-last element.
+*Skip Duplicates: Skip duplicate elements at the current position.
+*Set Pointers: Set two pointers l and r to the next element and the last element of the array.
+*Find Triplet: Find a triplet whose sum is equal to zero. If the sum is less than zero, increment l.
+*If the sum is greater than zero, decrement r. If the sum is equal to zero, add the triplet to result and move l and r towards the center.
+*Return Result: Return the list of unique triplets.
+CODE:
+def threeSum(nums):
+    nums.sort()
+    result = []
+    for i in range(len(nums) - 2):
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        l, r = i + 1, len(nums) - 1
+        while l < r:
+            s = nums[i] + nums[l] + nums[r]
+            if s < 0:
+                l += 1
+            elif s > 0:
+                r -= 1
+            else:
+                result.append([nums[i], nums[l], nums[r]])
+                while l < r and nums[l] == nums[l + 1]:
+                    l += 1
+                while l < r and nums[r] == nums[r - 1]:
+                    r -= 1
+                l += 1
+                r -= 1
+    return result
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+16.3SUM CLOSEST
+Algorithm:
+*Sort the Array: Sort the input array nums in ascending order.
+*Initialize Closest Sum: Initialize a variable closest_sum to infinity.
+*Loop: Loop through the array from the first element to the second-to-last element.
+*Set Pointers: Set two pointers l and r to the next element and the last element of the array.
+*Find Closest Sum: Find a triplet whose sum is closest to the target. 
+*If the sum is equal to the target, return the sum. If the sum is less than the target, increment l. 
+*If the sum is greater than the target, decrement r. If the sum is closer to the target than the current closest sum, update closest_sum.
+*Return Closest Sum: Return the sum of the three integers closest to the target.
+CODE:
+def threeSumClosest(nums, target):
+    nums.sort()
+    closest_sum = float('inf')
+    for i in range(len(nums) - 2):
+        l, r = i + 1, len(nums) - 1
+        while l < r:
+            s = nums[i] + nums[l] + nums[r]
+            if s == target:
+                return s
+            if abs(s - target) < abs(closest_sum - target):
+                closest_sum = s
+            if s < target:
+                l += 1
+            else:
+                r -= 1
+    return closest_sum
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+17.LETTER COMBINATIONS OF A PHONE NUMBER
+Algorithm:
+*Check for Empty Input: Check if the input string digits is empty. If so, return an empty list.
+*Initialize Phone Mapping: Initialize a dictionary phone to map digits to letters.
+*Define Backtrack Function: Define a recursive function backtrack to generate all possible combinations.
+*Backtrack: Call backtrack with an empty combination and the input digits.
+*Return Output: Return the list of all possible combinations.
+CODE:
+def letterCombinations(digits):
+    if not digits:
+        return []
+    phone = {'2': ['a', 'b', 'c'],
+             '3': ['d', 'e', 'f'],
+             '4': ['g', 'h', 'i'],
+             '5': ['j', 'k', 'l'],
+             '6': ['m', 'n', 'o'],
+             '7': ['p', 'q', 'r', 's'],
+             '8': ['t', 'u', 'v'],
+             '9': ['w', 'x', 'y', 'z']}
+    def backtrack(combination, next_digits):
+        if len(next_digits) == 0:
+            output.append(combination)
+        else:
+            for letter in phone[next_digits[0]]:
+                backtrack(combination + letter, next_digits[1:])
+    output = []
+    backtrack("", digits)
+    return output
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+18.4SUM
+Algorithm:
+*Sort the Array: Sort the input array nums in ascending order.
+*Initialize Result: Initialize an empty list result to store the quadruplets.
+*Loop: Loop through the array from the first element to the third-to-last element.
+*Skip Duplicates: Skip duplicate elements at the current position.
+*Set Pointers: Set two pointers left and right to the next element and the last element of the array.
+*Find Quadruplet: Find a quadruplet whose sum is equal to the target. If the sum is less than the target, increment left. 
+*If the sum is greater than the target, decrement right. If the sum is equal to the target, add the quadruplet to result and move left and right towards the center.
+*Return Result: Return the list of all unique quadruplets.
+CODE:
+def fourSum(nums, target):
+    nums.sort()
+    result = []
+    for i in range(len(nums) - 3):
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        for j in range(i + 1, len(nums) - 2):
+            if j > i + 1 and nums[j] == nums[j - 1]:
+                continue
+            left, right = j + 1, len(nums) - 1
+            while left < right:
+                s = nums[i] + nums[j] + nums[left] + nums[right]
+                if s < target:
+                    left += 1
+                elif s > target:
+                    right -= 1
+                else:
+                    result.append([nums[i], nums[j], nums[left], nums[right]])
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    left += 1
+                    right -= 1
+    return result
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+19.REMOVE NTH NODE FROM END OF LIST
+Algorithm:
+*Create Dummy Node: Create a dummy node and set its next pointer to the head of the linked list.
+*Initialize Pointers: Initialize two pointers, first and second, to the dummy node.
+*Advance First Pointer: Advance first pointer so that the gap between first and second is n nodes apart.
+*Move First to the End: Move first to the end of the linked list, maintaining the gap.
+*Remove Node: Remove the node at the end by setting second.next to second.next.next.
+*Return Head: Return the head of the modified linked list.
+CODE:
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+def removeNthFromEnd(head, n):
+    dummy = ListNode(0)
+    dummy.next = head
+    first = dummy
+    second = dummy
+    for i in range(n + 1):
+        first = first.next
+    while first:
+        first = first.next
+        second = second.next
+    second.next = second.next.next
+    return dummy.next
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+20.VALID PARENTHESES
+Algorithm:
+*Initialize Stack: Initialize an empty stack stack.
+*Initialize Mapping: Initialize a dictionary mapping to map closing brackets to their corresponding opening brackets.
+*Loop: Loop through each character char in the input string s.
+*Push Opening Brackets: If char is an opening bracket, push it onto the stack.
+*Check Closing Brackets: If char is a closing bracket, check if the stack is empty or if the top of the stack does not match the corresponding opening bracket. 
+*If either condition is true, return False.
+*Return Result: After looping through all characters, return whether the stack is empty. 
+*If the stack is empty, the input string is valid; otherwise, it is not.
+CODE:
+def isValid(s):
+    stack = []
+    mapping = {")": "(", "}": "{", "]": "["}
+    for char in s:
+        if char in mapping.values():
+            stack.append(char)
+        elif char in mapping:
+            if not stack or mapping[char] != stack.pop():
+                return False
+    return not stack
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
