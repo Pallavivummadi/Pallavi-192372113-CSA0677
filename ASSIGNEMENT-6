@@ -1,0 +1,251 @@
+1.MAXIMUM XOR OF TWO NON-OVERLAPPING STRUCTURES
+algorithm
+Construct the Graph:
+Create an adjacency list representation of the tree from the given edges.
+Calculate the Maximum XOR:
+Iterate over each node in the graph.
+For each node, iterate over its neighbors.
+Calculate the XOR of the node's value and its neighbor's value.
+Update the maximum XOR if the current XOR is greater.
+Return the Maximum XOR:
+Return the maximum XOR calculated in the previous step.
+code:
+class Solution:
+    def maximumXOR(self, n, edges, values):
+        graph = [[] for _ in range(n)]
+        for edge in edges:
+            graph[edge[0]].append(edge[1])
+            graph[edge[1]].append(edge[0])
+        max_xor = 0
+        for node in range(n):
+            for neighbor in graph[node]:
+                max_xor = max(max_xor, values[node] ^ values[neighbor])
+        return max_xor
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.FORM A CHEMICAL BOND
+algorithm
+Create a Dictionary:
+Create a dictionary to store the elements and their types.
+Find Metal and Nonmetal Elements:
+Iterate over the elements and identify the metal and nonmetal elements.
+Form Bonds:
+For each metal element, iterate over the nonmetal elements and form a bond if they match the criteria.
+Return the Result:
+Return the list of formed bonds.
+code:
+class Solution:
+    def formaChemicalBond(self, elements):
+        elements_dict = {}
+        for element in elements:
+            elements_dict[element[0]] = element[1]
+        result = []
+        for metal in elements_dict:
+            if elements_dict[metal] == 'Metal':
+                for nonmetal in elements_dict:
+                    if elements_dict[nonmetal] == 'Nonmetal':
+                        result.append((metal, nonmetal))
+        return result
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.MINIMUM CUTS TO DIVIDE A CIRCLE
+algorithm
+Calculate the Minimum Cuts:
+The minimum number of cuts needed to divide a circle into n equal slices is n - 1.
+code:
+class Solution:
+    def minCuts(self, n):
+        return n - 1
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.DIFFERENCE BETWEEN ONCE AND ZEROS IN ROWS AND COLUMNS
+algorithm
+Initialize Variables:
+Initialize the minimum penalty to infinity and the minimum hour to 0.
+Iterate over Possible Closing Hours:
+Iterate over the possible closing hours from 0 to the length of the customers string.
+Calculate Penalty for Current Closing Hour:
+For each closing hour, calculate the penalty by:
+Counting the number of hours when the shop is open and no customers come.
+Counting the number of hours when the shop is closed and customers come.
+Adding these two counts to get the total penalty.
+Update Minimum Penalty and Hour:
+If the current penalty is less than the minimum penalty, update the minimum penalty and the minimum hour.
+Return the Minimum Hour:
+Return the minimum hour as the result.
+code:
+class Solution:
+    def minPenalty(self, customers):
+        n = len(customers)
+        min_penalty = float('inf')
+        min_hour = 0
+        for j in range(n + 1):
+            penalty = 0
+            for i in range(j):
+                if customers[i] == 'N':
+                    penalty += 1
+            for i in range(j, n):
+                if customers[i] == 'Y':
+                    penalty += 1
+            if penalty < min_penalty:
+                min_penalty = penalty
+                min_hour = j
+        return min_hour
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+5.MINIMUM PENALTY FOR A SHOP
+algorithm:
+Initialize Variables:
+Initialize the minimum penalty to infinity and the minimum hour to 0.
+Iterate over Possible Closing Hours:
+Iterate over the possible closing hours from 0 to the length of the customers string.
+Calculate Penalty for Current Closing Hour:
+For each closing hour, calculate the penalty by:
+Counting the number of hours when the shop is open and no customers come.
+Counting the number of hours when the shop is closed and customers come.
+Adding these two counts to get the total penalty.
+Update Minimum Penalty and Hour:
+If the current penalty is less than the minimum penalty, update the minimum penalty and the minimum hour.
+Return the Minimum Hour:
+Return the minimum hour as the result.
+CODE:
+class Solution:
+    def minPenalty(self, customers):
+        n = len(customers)
+        min_penalty = float('inf')
+        min_hour = 0
+        for j in range(n + 1):
+            penalty = 0
+            for i in range(j):
+                if customers[i] == 'N':
+                    penalty += 1
+            for i in range(j, n):
+                if customers[i] == 'Y':
+                    penalty += 1
+            if penalty < min_penalty:
+                min_penalty = penalty
+                min_hour = j
+        return min_hour
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6.COUNT PALINDROMIC SUNSEQUENCE
+ALGORITHM:
+Initialize a 2D array dp of size (n+1) x (n+1), where n is the length of the input string s. dp[i][j] will store the number of palindromic subsequences of length j-i+1 in the substring s[i:j+1].
+Initialize the diagonal elements dp[i][i] to 1, as a single character is a palindromic subsequence of length 1.
+Iterate through the lengths of the subsequences, from 2 to n.
+For each length, iterate through the starting indices i from 0 to n-length+1.
+Calculate the ending index j = i + length - 1.
+If the characters at indices i and j are the same, then the number of palindromic subsequences is the number of palindromic
+subsequences in the substring s[i+1:j] (i.e., dp[i+1][j-1]) plus 2 (for the palindromic subsequences that start and end with the characters at indices i and j).
+If the characters at indices i and j are different, then the number of palindromic subsequences is the sum of 
+the number of palindromic subsequences in the substring s[i+1:j+1] (i.e., dp[i+1][j]) and the number of palindromic 
+subsequences in the substring s[i:j] (i.e., dp[i][j-1]), minus the number of palindromic subsequences in the substring s[i+1:j] (i.e., dp[i+1][j-1]), to avoid double-counting.
+After filling the dp array, return the value stored in dp[n-1] as the final answer, modulo 10^9 + 7.
+CODE:
+def countPalindromicSubsequences(s):
+    MOD = 10**9 + 7
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j]:
+                dp[i][j] = dp[i + 1][j - 1] + 2
+            else:
+                dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1]
+            dp[i][j] %= MOD
+    return dp[0][n - 1]
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7.FIND THE PIVOT INTEGER
+ALGORITHM:
+Calculate the total sum of all numbers from 1 to n using the formula sum(range(1, n + 1)).
+Initialize a variable left_sum to 0, which will store the sum of numbers from 1 to x.
+Iterate through the numbers from 1 to n.
+For each number i, add i to left_sum.
+Check if left_sum equals the total sum minus left_sum. If it does, return i as the pivot integer.
+If no such integer is found, return -1.
+CODE:
+def pivotInteger(n):
+    total = sum(range(1, n + 1))
+    left_sum = 0
+    for i in range(1, n + 1):
+        left_sum += i
+        if left_sum == total - left_sum:
+            return i
+    return -1
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8.APPEND CHARACTERS TO STRING TO MAKE SUBSEQUENCE
+ALGORITHM:
+Concatenate s and t into a single string s.
+Initialize a variable res to 0, which will store the minimum number of characters to append.
+Initialize an empty stack.
+Iterate through each character c in s.
+If c is an opening parenthesis (, push it onto the stack.
+If c is a closing parenthesis ), check if the stack is not empty. If it is not empty, pop the opening parenthesis from the stack. If it is empty, increment res by 1.
+Return res as the minimum number of characters to append.
+CODE:
+def minAddToMakeValid(s, t):
+    s += t
+    res = 0
+    stack = []
+    for c in s:
+        if c == '(':
+            stack.append(c)
+        elif c == ')':
+            if stack:
+                stack.pop()
+            else:
+                res += 1
+    return res
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9.REMOVE NODES FROM LINKEDLIST
+ALGORITHM:
+If the linked list is empty or has only one node, return the head as is.
+Create a dummy node and set its next pointer to the head of the linked list.
+Initialize a variable max_val to the value of the dummy node, which is 0.
+Initialize two pointers, prev and curr, to the dummy node and the head of the linked list, respectively.
+Traverse the linked list using the curr pointer.
+For each node:
+If the current node's value is greater than or equal to max_val, update max_val to the current node's value and move the prev pointer to the current node.
+If the current node's value is less than max_val, remove the current node by updating the next pointer of the prev node to skip the current node.
+Move the curr pointer to the next node.
+After the loop, return the next pointer of the dummy node, which is the head of the modified linked list.
+CODE:
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+def removeNodes(head):
+    if not head or not head.next:
+        return head
+    dummy = ListNode(0, head)
+    max_val = dummy.val
+    prev, curr = dummy, head
+    while curr:
+        if curr.val >= max_val:
+            max_val = curr.val
+            prev = curr
+        else:
+            prev.next = curr.next
+        curr = curr.next
+    return dummy.next
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10.COUNT SUBARRAYS WITH MEDIAN K
+ALGORITHM:
+Initialize a variable res to 0, which will store the count of subarrays with median k.
+Iterate through each element i in the array nums.
+Initialize two pointers left and right to i.
+Move left to the left and right to the right until nums[left] is greater than k or nums[right] is less than k.
+If nums[left] and nums[right] are both equal to k, increment res by right - left + 1, which is the number of subarrays with median k.
+Move left to the left and right to the right until nums[left] is greater than k or nums[right] is less than k.
+Return res as the count of subarrays with median k.
+CODE:
+def countSubarrays(nums, k):
+    n = len(nums)
+    res = 0
+    for i in range(n):
+        left, right = i, i
+        while left >= 0 and right < n and nums[left] <= k <= nums[right]:
+            if nums[left] == k and nums[right] == k:
+                res += right - left + 1
+            left -= 1
+            right += 1
+    return res
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
