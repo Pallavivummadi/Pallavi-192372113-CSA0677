@@ -1,0 +1,214 @@
+1. Convert the Temperature:
+ Algoritham:
+The algorithm should convert the given Celsius temperature to Kelvin and Fahrenheit.
+The conversion formulas are: Kelvin = Celsius + 273.15, and Fahrenheit = Celsius * 1.80 + 32.00.
+The algorithm should return the converted values as an array [Kelvin, Fahrenheit].
+The algorithm should ensure the output values are accurate to within 10^-5 of the actual values.
+code:
+def convert_temperature(celsius):
+    kelvin = celsius + 273.15
+    fahrenheit = celsius * 1.80 + 32.00
+    return [kelvin, fahrenheit]
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2. Number of Subarrays With LCM Equal to K:
+Algorithm:
+   The algorithm should count the number of subarrays in the given array nums where the least common multiple (LCM) of the subarray's elements is equal to the given integer k.
+    The algorithm should use a combination of prime factorization and dynamic programming to efficiently compute the LCM of each subarray.
+    The algorithm should keep track of the count of subarrays with the desired LCM and return the final count.
+code:
+ def subarray_lcm(nums, k):
+    def gcd(a, b):
+        while b:
+            a, b = b, a % b
+        return a
+    def lcm(a, b):
+        return a * b // gcd(a, b)
+    count = 0
+    for i in range(len(nums)):
+        for j in range(i, len(nums)):
+            subarray = nums[i:j + 1]
+            lcm_val = subarray[0]
+            for num in subarray[1:]:
+                lcm_val = lcm(lcm_val, num)
+            if lcm_val == k:
+                count += 1
+    return count
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. Minimum Number of Operations to Sort a Binary Tree by Level:
+Algorithm:
+    The algorithm should find the minimum number of operations required to sort the values at each level of the given binary tree in strictly increasing order.
+    The algorithm should traverse the tree level by level and identify the nodes at each level that need to be swapped to sort the values.
+    The algorithm should keep a count of the minimum number of swap operations required and return the final count.
+code:
+class Solution:
+    def min_operations(self, root):
+        def dfs(node, level, prev):
+            if not node:
+                return 0
+            operations = 0
+            if prev and node.val < prev.val:
+                operations += 1
+            operations += dfs(node.left, level + 1, node.val) + dfs(node.right, level + 1, node.val)
+            return operations
+        return dfs(root, 0, None)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Maximum Number of Non-overlapping Palindrome Substrings:
+    The algorithm should find the maximum number of non-overlapping palindrome substrings of length at least k that can be selected from the given string s.
+    The algorithm should use a combination of dynamic programming and greedy approaches to identify the optimal set of palindrome substrings.
+    The algorithm should ensure that the selected substrings are non-overlapping and return the maximum count.
+Code:
+def max_palindromes(s, k):
+    def is_palindrome(substring):
+        return substring == substring[::-1]
+    max_palindromes = 0
+    i = 0
+    while i < len(s):
+        for j in range(k, len(s) + 1):
+            substring = s[i:j]
+            if is_palindrome(substring):
+                max_palindromes += 1
+                i = j
+                break
+    return max_palindromes
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. Minimum Cost to Buy Apples:
+Algorithm:
+   The algorithm should find the minimum amount of fuel required for the representatives from all cities to travel to the capital city (city 0).
+   The algorithm should use a depth-first search (DFS) or breadth-first search (BFS) approach to traverse the tree-like structure of the country network.
+   The algorithm should keep track of the number of representatives from each city and the fuel cost required for them to reach the capital, considering the car's seating capacity.
+    The algorithm should return the minimum total fuel cost required for all representatives to reach the capital.
+Code:
+def min_cost_to_buy_apples(n, roads, apple_cost, k):
+    def dfs(node, parent, cost):
+        if not node:
+            return cost
+        if node.val == 1:
+            return cost + apple_cost[node.val - 1]
+        for neighbor in node.neighbors:
+            if neighbor != parent:
+                cost = min(cost, dfs(neighbor, node, cost + 1))
+        return cost
+    return [dfs(node, None, 0) for node in range(1, n + 1)]
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. Customers With Strictly Increasing Purchases:
+Algorithm:
+      Initialize an empty table to store the total purchases for each customer.
+      Iterate over the given orders and for each order, update the total purchases for the corresponding customer.
+      Check if the total purchases are strictly increasing yearly for each customer.
+      Return the IDs of the customers with strictly increasing yearly purchases.
+Code:
+def customers_with_strictly_increasing_purchases(orders):
+    customers = {}
+    for order in orders:
+        customer_id = order[1]
+        order_date = order[2].year
+        price = order[3]
+        if customer_id not in customers:
+            customers[customer_id] = {}
+        if order_date not in customers[customer_id]:
+            customers[customer_id][order_date] = 0
+        customers[customer_id][order_date] += price
+    result = []
+    for customer_id, purchases in customers.items():
+        sorted_purchases = sorted(purchases.values())
+        if all(sorted_purchases[i] < sorted_purchases[i + 1] for i in range(len(sorted_purchases) - 1)):
+            result.append(customer_id)
+    return result
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+7. Number of Unequal Triplets in Array:
+Algorithm:
+    Initialize an empty set ss to store the binary equivalents of all possible powers of 5.
+    Iterate over the given array and for each element, calculate its decimal value and check if it is in ss. If it is, add 1 to the result of dfs(j + 1).
+    Use memoization to cache results of dfs(i) for each index i.
+    Call dfs(0) to find the number of triplets.
+    Return the result.
+Code:
+def number_of_unequal_triplets(nums):
+    count = 0
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            for k in range(j + 1, len(nums)):
+                if nums[i] != nums[j] and nums[i] != nums[k] and nums[j] != nums[k]:
+                    count += 1
+    return count
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8. Closest Nodes Queries in a Binary Search Tree:
+Algorithm:
+    Initialize an empty array answer to store the closest nodes for each query value.
+    Iterate over the given binary search tree and for each node, check if it is smaller than or equal to and greater than or equal to the query value.
+    Use memoization to cache results of dfs(i) for each node i.
+    Call dfs(0) to find the closest nodes.
+    Return the result.
+code:
+class Solution:
+    def closest_nodes_queries(self, root, queries):
+        def dfs(node, lower, upper):
+            if not node:
+                return []
+            if lower <= node.val <= upper:
+                return [node.val, node.val]
+            if lower < node.val:
+                left = dfs(node.left, lower, upper)
+                if left:
+                    return left
+            if upper > node.val:
+                right = dfs(node.right, lower, upper)
+                if right:
+                    return right
+            return []
+        return [[dfs(node, query, query)[0], dfs(node, query, query)[1]] for query in queries]
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+9. Minimum Fuel Cost to Report to the Capital:
+Algorithm:
+    Initialize an empty array answer to store the minimum number of liters of fuel for each city.
+    Iterate over the given country network and for each city, calculate the minimum number of liters of fuel by considering the cost of traveling between cities.
+    Use memoization to cache results of dfs(i) for each city i.
+    Call dfs(0) to find the minimum number of liters of fuel.
+    Return the result.
+Code:
+def min_fuel_cost(roads, seats):
+    def dfs(node, parent):
+        if not node:
+            return 0
+        if node.val == 0:
+            return 0
+        return 1 + dfs(node.left, node) + dfs(node.right, node)
+    n = dfs(None, None)
+    return n
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+10. Number of Beautiful Partitions:
+Algorithm:
+    Initialize an empty set ss to store the binary equivalents of all possible powers of 5.
+    Iterate over the given string and for each element, calculate its decimal value and check if it is in ss. If it is, add 1 to the result of dfs(j + 1).
+    Use memoization to cache results of dfs(i) for each index i.
+    Call dfs(0) to find the number of beautiful partitions.
+    Return the result.
+Code:
+def number_of_beautiful_partitions(s, k, minLength):
+    def is_prime(num):
+        if num < 2:
+            return False
+        for i in range(2, int(num ** 0.5) + 1):
+            if num % i == 0:
+                return False
+        return True
+
+    def dfs(start, end, k, length):
+        if k == 0:
+            return 1
+        if length < minLength:
+            return 0
+        count = 0
+        for i in range(start, end + 1):
+            if is_prime(s[i]):
+                for j in range(i + minLength, end + 1):
+                    if not is_prime(s[j]):
+                        count += dfs(i, j, k - 1, length + 1)
+        return count % (10 ** 9 + 7)
+    return dfs(0, len(s) - 1, k, 0)
+--------------------------------------------------------------------------------------------------------
