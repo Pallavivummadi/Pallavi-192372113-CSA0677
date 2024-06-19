@@ -1,0 +1,84 @@
+def min_length_of_array(nums):
+    stack = []
+    for num in nums:
+        if stack and num < stack[-1]:
+            stack.pop()
+        else:
+            stack.append(num)
+    return len(stack)
+
+# Example
+nums = [1, 2, 3, 4]
+print(min_length_of_array(nums))
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def sortedArrayToBST(nums):
+    if not nums:
+        return None
+
+    mid = len(nums) // 2
+
+    root = TreeNode(nums[mid])
+    root.left = sortedArrayToBST(nums[:mid])
+    root.right = sortedArrayToBST(nums[mid + 1:])
+
+    return root
+
+# Example
+nums = [-10, -3, 0, 5, 9]
+result = sortedArrayToBST(nums)
+
+
+
+def stringMatching(words):
+    return [word for word in words if any(other_word != word and other_word.find(word) != -1 for other_word in words)]
+
+# Example
+words = ["mass", "as", "hero", "superhero"]
+print(stringMatching(words))
+
+
+
+def wiggleSort(nums):
+    nums.sort()
+    half = len(nums[::2])
+    nums[::2], nums[1::2] = nums[:half][::-1], nums[half:][::-1]
+
+
+
+from collections import deque
+
+def updateMatrix(mat):
+    rows, cols = len(mat), len(mat[0])
+    queue = deque()
+
+    for i in range(rows):
+        for j in range(cols):
+            if mat[i][j] == 0:
+                queue.append((i, j))
+            else:
+                mat[i][j] = float('inf')
+
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+    while queue:
+        cell = queue.popleft()
+        for d in directions:
+            new_i, new_j = cell[0] + d[0], cell[1] + d[1]
+            if 0 <= new_i < rows and 0 <= new_j < cols and mat[new_i][new_j] > mat[cell[0]][cell[1]] + 1:
+                mat[new_i][new_j] = mat[cell[0]][cell[1]] + 1
+                queue.append((new_i, new_j))
+
+    return mat
+
+# Test Cases
+mat1 = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+mat2 = [[0, 0, 0], [0, 1, 0], [1, 1, 1]]
+
+print(updateMatrix(mat1))  # Output: [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+print(updateMatrix(mat2))  # Output: [[0, 0, 0], [0, 1, 0], [1, 2, 1]]
