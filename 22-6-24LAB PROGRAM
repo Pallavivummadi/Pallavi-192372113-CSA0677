@@ -1,0 +1,71 @@
+1.import math
+
+def binomial_coefficient(n, k):
+    return math.factorial(n) // (math.factorial(k) * math.factorial(n - k))
+
+n = 5
+k = 2
+result = binomial_coefficient(n, k)
+print(f"The binomial coefficient of ({n}, {k}) is: {result}")
+
+2.def bellman_ford_with_cycle_detection(graph, source):
+    distances = {vertex: float('infinity') for vertex in graph}
+    distances[source] = 0
+
+    for _ in range(len(graph) - 1):
+        for u, v, weight in graph:
+            if distances[u] + weight < distances[v]:
+                distances[v] = distances[u] + weight
+
+    for u, v, weight in graph:
+        if distances[u] + weight < distances[v]:
+            print("Graph contains negative weight cycle")
+            return
+
+    return distances
+
+# Example Usage
+graph = [("A", "B", -1), ("A", "C", 4), ("B", "C", 3), ("B", "D", 2), ("B", "E", 2), ("D", "C", 5), ("D", "B", 1), ("E", "D", -3)]
+source_vertex = "A"
+shortest_distances = bellman_ford_with_cycle_detection(graph, source_vertex)
+print(shortest_distances)
+
+3.def shortest_path(graph, start, end):
+    dist = floyd_warshall(graph)
+    shortest_path = [start]
+    while start != end:
+        start = min(range(len(graph)), key=lambda x: dist[start][x] + dist[x][end])
+        shortest_path.append(start)
+    return shortest_path
+
+# Example graph
+graph = [
+    [0, 5, float('inf'), 10],
+    [float('inf'), 0, 3, float('inf')],
+    [float('inf'), float('inf'), 0, 1],
+    [float('inf'), float('inf'), float('inf'), 0]
+]
+
+start_vertex = 0
+end_vertex = 3
+path = shortest_path(graph, start_vertex, end_vertex)
+print("Shortest Path from vertex", start_vertex, "to vertex", end_vertex, "is:", path)
+
+4.def two_sum(arr, target):
+    complements = {}
+    result = []
+    
+    for num in arr:
+        complement = target - num
+        if complement in complements:
+            result.append((complements[complement], arr.index(num)))
+        complements[num] = arr.index(num)
+    
+    return result
+
+# Example Usage
+arr = [2, 7, 11, 15]
+target = 9
+print(two_sum(arr, target))  # Output: [(0, 1)]
+
+
