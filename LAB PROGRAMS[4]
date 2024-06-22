@@ -1,0 +1,160 @@
+1.dice throw problem
+algorithm:
+Initialize the number of dice n and the number of heads k as input.
+Initialize the total number of possible outcomes total_outcomes to 2^n.
+Counting Outcomes:
+Iterate through all possible outcomes of the dice throws.
+For each outcome, count the number of heads heads and the number of tails tails.
+If heads equals k, increment the count of favorable outcomes favorable_outcomes.
+Calculating Probability:
+Calculate the probability of getting k heads by dividing the count of favorable outcomes by the total number of possible outcomes.
+code:
+def dice_throw(n, k):
+    """
+    Calculates the probability of getting k heads when throwing n dice.
+    Args:
+    n (int): The number of dice.
+    k (int): The number of heads.
+    Returns:
+    float: The probability of getting k heads.
+    """
+    total_outcomes = 2 ** n
+    favorable_outcomes = 0
+    for outcome in range(total_outcomes):
+        heads = 0
+        for i in range(n):
+            if (outcome >> i) & 1:
+                heads += 1
+        if heads == k:
+            favorable_outcomes += 1
+    return favorable_outcomes / total_outcomes
+n = 3
+k = 2
+probability = dice_throw(n, k)
+print(f"The probability of getting {k} heads when throwing {n} dice is {probability:.4f}")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.subset sum problem
+algorithm:
+Initialize the set of integers nums and the target sum target.
+Initialize an empty list result to store the subsets that sum up to the target.
+Dynamic Programming:
+Create a 2D array dp where dp[i][j] represents whether the subset of nums from index 0 to i sums up to j.
+Initialize dp to True and dp[j] to False for all j > 0.
+Iterate through nums and for each number num, iterate through dp and update dp[i][j] to True if dp[i-1][j-num] is True.
+Output:
+Iterate through dp and find all subsets that sum up to the target.
+Add these subsets to result
+code:
+def subset_sum(nums, target):
+    """
+    Determines whether a subset of the given set of integers sums up to the target value
+    Args:
+    nums (list): The set of integers.
+    target (int): The target sum.
+    Returns:
+    list: The subsets that sum up to the target.
+    """
+    n = len(nums)
+    dp = [[False] * (target + 1) for _ in range(n + 1)]
+    dp[0][0] = True
+
+    for i in range(1, n + 1):
+        for j in range(target + 1):
+            if j < nums[i - 1]:
+                dp[i][j] = dp[i - 1][j]
+            else:
+                dp[i][j] = dp[i - 1][j] or dp[i - 1][j - nums[i - 1]]
+    result = []
+    for i in range(n + 1):
+        if dp[i][target]:
+            subset = []
+            j = target
+            for k in range(i, -1, -1):
+                if j >= nums[k - 1] and dp[k - 1][j - nums[k - 1]]:
+                    subset.append(nums[k - 1])
+                    j -= nums[k - 1]
+                else:
+                    subset.append(nums[k - 1])
+                    break
+            result.append(subset)
+    return result
+nums = [3, 34, 4, 12, 5, 2]
+target = 9
+result = subset_sum(nums, target)
+print(result)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.assembly line sheduling
+algorithm:
+Define the number of assembly lines n and the number of stations m on each line.
+Initialize the time taken at each station a[i][j], where i is the assembly line and j is the station.
+Initialize the transfer time between the last station of one line and the first station of the next line t[i], where i is the assembly line.
+Dynamic Programming:
+Create two arrays f[i][j] and e[i][j], where f[i][j] represents the minimum time to complete the first j stations on line i, and e[i][j] represents the minimum time to complete the first j stations on line i and transfer to the next line.
+Initialize f[i][1] = a[i][1] and e[i][1] = a[i][1] + t[i] for all i.
+Iterate through the stations j from 2 to m, and for each line i:
+f[i][j] = a[i][j] + min(f[i][j-1], e[i][j-1]): Update the minimum time to complete the first j stations on line i.
+e[i][j] = a[i][j] + min(f[i][j-1] + t[i], e[i][j-1]): Update the minimum time to complete the first j stations on line i and transfer to the next line.
+The minimum total time is min(f[n][m], e[n][m]), where n is the number of assembly lines.
+The optimal sequence of tasks can be reconstructed by tracking the choices made in the dynamic programming step.
+code:
+def assembly_line_scheduling(n, m, a, t):
+    """
+    Solves the assembly line scheduling problem.
+    Args:
+    n (int): The number of assembly lines.
+    m (int): The number of stations on each line.
+    a (list of lists): The time taken at each station on each line.
+    t (list): The transfer time between the last station of one line and the first station of the next line.
+    Returns:
+    float: The minimum total time.
+    """
+    f = [[0] * (m + 1) for _ in range(n + 1)]
+    e = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        f[i][1] = a[i][1]
+        e[i][1] = a[i][1] + t[i]
+    for j in range(2, m + 1):
+        for i in range(1, n + 1):
+            f[i][j] = a[i][j] + min(f[i][j-1], e[i][j-1])
+            e[i][j] = a[i][j] + min(f[i-1][j-1] + t[i], e[i-1][j-1])
+    return min(f[n][m], e[n][m])'
+n = 2
+m = 3
+a = [[7, 9, 3, 4, 8, 4], [8, 5, 6, 4, 5, 7]]
+t = [2, 3]
+minimum_time = assembly_line_scheduling(n, m, a, t)
+print(f"The minimum total time is: {minimum_time}")
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.longest palindronmic subsequences
+algorithm:
+Define the input string s and the length of the string n.
+Initialize a 2D array dp of size (n + 1) x (n + 1) to store the lengths of the longest palindromic subsequences.
+Dynamic Programming:
+Iterate through the string s from left to right.
+For each character s[i], iterate through the string from i to 0.
+For each character s[j], check if s[i] == s[j].
+If s[i] == s[j], update dp[i][j] to dp[i-1][j-1] + 2.
+If s[i] != s[j], update dp[i][j] to max(dp[i-1][j], dp[i][j-1]).
+The longest palindromic subsequence is stored in dp[n][n].
+code:
+def longest_palindromic_subsequence(s):
+    """
+    Finds the longest palindromic subsequence in a given string.
+    Args:
+    s (str): The input string.
+    Returns:
+    int: The length of the longest palindromic subsequence.
+    """
+    n = len(s)
+    dp = [[0] * (n + 1) for _ in range(n + 1)]]
+    for i in range(n):
+        for j in range(i, -1, -1):
+            if s[i] == s[j]:
+                dp[i][j] = dp[i-1][j-1] + 2
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    return dp[n][n]
+s = "banana"
+length = longest_palindromic_subsequence(s)
+print(f"The length of the longest palindromic subsequence is: {length}")
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
