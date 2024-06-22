@@ -1,0 +1,131 @@
+1.
+code:
+def wordBreak(s, wordDict):
+    n = len(s)
+    dp = [False] * (n + 1)
+    dp[0] = True
+    for i in range(1, n + 1):
+        for j in range(i):
+            if dp[j] and s[j:i] in wordDict:
+                dp[i] = True
+                break
+    return dp[n]
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    2.Word trap problem
+    
+code:
+function wordBreak(s, wordDict):
+    n = length(s)
+    dp = [False] * (n + 1)
+    dp[0] = True
+
+    for i from 1 to n:
+        for j from 0 to i - 1:
+            if dp[j] and s[j:i] in wordDict:
+                dp[i] = True
+                break
+
+    return dp[n]
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    3.OBST
+    
+
+code:
+class Node:
+    def _init_(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+class OBST:
+    def _init_(self):
+        self.root = None
+    def insert(self, value):
+        if self.root is None:
+            self.root = Node(value)
+        else:
+            self._insert(self.root, value)
+    def _insert(self, node, value):
+        if value < node.value:
+            if node.left is None:
+                node.left = Node(value)
+            else:
+                self._insert(node.left, value)
+        elif value > node.value:
+            if node.right is None:
+                node.right = Node(value)
+            else:
+                self._insert(node.right, value)
+    def search(self, value):
+        return self._search(self.root, value)
+    def _search(self, node, value):
+        if node is None:
+            return None
+        if value == node.value:
+            return node
+        elif value < node.value:
+            return self._search(node.left, value)
+        else:
+            return self._search(node.right, value)
+    def delete(self, value):
+        self.root = self._delete(self.root, value)
+    def _delete(self, node, value):
+        if node is None:
+            return None
+        if value < node.value:
+            node.left = self._delete(node.left, value)
+        elif value > node.value:
+            node.right = self._delete(node.right, value)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            else:
+                min_node = self._find_min(node.right)
+                node.value = min_node.value
+                node.right = self._delete(node.right, min_node.value)
+        return node
+    def _find_min(self, node):
+        while node.left is not None:
+            node = node.left
+        return node
+obst = OBST()
+obst.insert(5)
+obst.insert(3)
+obst.insert(7)
+obst.insert(2)
+obst.insert(4)
+obst.insert(6)
+obst.insert(8)
+print(obst.search(3).value)  
+print(obst.search(9))  
+obst.delete(4)
+print(obst.search(4)) 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4.flyod algorithm
+code:
+def floyd_warshall(n, dist):
+    """
+    Implements the Floyd-Warshall algorithm to find the shortest paths between all pairs of nodes.
+    Args:
+    n (int): The number of nodes in the graph.
+    dist (list of lists): The adjacency matrix representing the graph.
+    Returns:
+    list of lists: The updated adjacency matrix containing the shortest paths between all pairs of nodes.
+    """
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][j] > dist[i][k] + dist[k][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    return dist
+n = 4
+dist = [
+    [0, 5, float('inf'), 10],
+    [float('inf'), 0, 3, float('inf')],
+    [float('inf'), float('inf'), 0, 1],
+    [float('inf'), float('inf'), float('inf'), 0]
+]
+result = floyd_warshall(n, dist)
+print(result)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
