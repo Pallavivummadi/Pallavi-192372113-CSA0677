@@ -1,0 +1,83 @@
+26.def longest_nice_substring(s):
+    nice_substring = ""
+    max_length = 0
+    for i in range(len(s)):
+        for j in range(i + 1, len(s)):
+            if all((chr(ord('a') + k) in s and chr(ord('A') + k) in s) or (chr(ord('A') + k) in s and chr(ord('a') + k) in s) for k in range(26)):
+                if j - i > max_length:
+                    max_length = j - i
+                    nice_substring = s[i:j]
+    return nice_substring
+
+# Input:
+s = "YazaAay"
+print(longest_nice_substring(s)) 
+# Output: "aAa"
+
+27.def find_prefix_word_index(sentence, searchWord):
+    words = sentence.split()
+    for idx, word in enumerate(words, 1):
+        if word.startswith(searchWord):
+            return idx
+    return -1
+
+# input:
+sentence = "i love eating burger"
+searchWord = "burg"
+print(find_prefix_word_index(sentence, searchWord)) 
+# Output: 4
+
+28.def find_pair(nums, indexDiff, valueDiff):
+    for i in range(len(nums)):
+        for j in range(i+1, len(nums)):
+            if i != j and abs(i - j) <= indexDiff and abs(nums[i] - nums[j]) <= valueDiff:
+                return True
+    return False
+
+# input:
+nums = [1, 2, 3, 1]
+indexDiff = 3
+valueDiff = 0
+print(find_pair(nums, indexDiff, valueDiff)) 
+# Output: True
+
+29.def min_length_after_operations(nums):
+    stack = []
+    for num in nums:
+        if stack and num < stack[-1]:
+            stack.pop()
+        else:
+            stack.append(num)
+    return len(stack)
+
+# Example
+nums = [1, 2, 3, 4]
+print(min_length_after_operations(nums))  
+# Output: 0
+
+30.class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def sortedArrayToBST(nums):
+    if not nums:
+        return None
+
+    mid = len(nums) // 2
+    root = TreeNode(nums[mid])
+    root.left = sortedArrayToBST(nums[:mid])
+    root.right = sortedArrayToBST(nums[mid + 1:])
+
+    return root
+
+# Example
+nums = [-10, -3, 0, 5, 9]
+result = sortedArrayToBST(nums)
+
+
+
+
+
+
